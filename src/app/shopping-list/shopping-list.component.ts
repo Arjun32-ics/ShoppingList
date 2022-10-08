@@ -20,5 +20,7 @@ ingredients !:Ingredient[] ;
       }
     )
   }
-  
+  onEditItem(index : number){
+    this.slService.startedEditing.next(index);
+  }
 }
