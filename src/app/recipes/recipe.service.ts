@@ -9,29 +9,36 @@ export class RecipeService{
 recipeSelected = new Subject<Recipe>();
 recipeChanged = new Subject<Recipe[]>();
 
-    private recipes : Recipe[] = [
-        new Recipe(
-            'Pizza',
-            'Tasty',
-            'https://th.bing.com/th/id/OIP.VJheVPW-C9sgHDbv1uOX4QHaFn?pid=ImgDet&rs=1',
-        //'https://townsquare.media/site/959/files/2020/06/GettyImages-980860860.jpg?w=1200&h=0&zc=1&s=0&a=t&q=89',
-        [
-            new Ingredient('PizzaBase',1),
-            new Ingredient('PizzaSauce',2),
+    // private recipes : Recipe[] = [
+    //     new Recipe(
+    //         'Pizza',
+    //         'Tasty',
+    //         'https://th.bing.com/th/id/OIP.VJheVPW-C9sgHDbv1uOX4QHaFn?pid=ImgDet&rs=1',
+    //     //'https://townsquare.media/site/959/files/2020/06/GettyImages-980860860.jpg?w=1200&h=0&zc=1&s=0&a=t&q=89',
+    //     [
+    //         new Ingredient('PizzaBase',1),
+    //         new Ingredient('PizzaSauce',2),
 
-        ]),
-        new Recipe(
-            'Burger',
-            'Yumm',
-            'https://cmx.weightwatchers.com/assets-proxy/weight-watchers/image/upload/v1594406683/visitor-site/prod/ca/burgers_masthead_xtkxft',
-        //'https://townsquare.media/site/959/files/2020/06/GettyImages-980860860.jpg?w=1200&h=0&zc=1&s=0&a=t&q=89',
-        [
-            new Ingredient('Bread',1),
-            new Ingredient('Potato',2),
-        ])
-      ]
+    //     ]),
+    //     new Recipe(
+    //         'Burger',
+    //         'Yumm',
+    //         'https://cmx.weightwatchers.com/assets-proxy/weight-watchers/image/upload/v1594406683/visitor-site/prod/ca/burgers_masthead_xtkxft',
+    //     //'https://townsquare.media/site/959/files/2020/06/GettyImages-980860860.jpg?w=1200&h=0&zc=1&s=0&a=t&q=89',
+    //     [
+    //         new Ingredient('Bread',1),
+    //         new Ingredient('Potato',2),
+    //     ])
+    //   ]
 
       constructor(private slService : ShoppingListService){}
+
+      private recipes : Recipe[] = [];
+
+      setRecipe(recipe: Recipe[]){
+        this.recipes = recipe;
+        this.recipeChanged.next(this.recipes.slice())
+      }
 
       getRecipe(){
         return  this.recipes.slice();
