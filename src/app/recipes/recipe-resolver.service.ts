@@ -6,7 +6,7 @@ import { RecipeService } from "./recipe.service";
 
 
 @Injectable({providedIn:'root'})
-export class RecipeResolverService implements Resolve<Recipe[]>{
+export class RecipeResolverService implements Resolve<any>{
     constructor(private datastorageService : DataStorageService,
         private recipeService : RecipeService){}
 

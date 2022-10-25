@@ -40,7 +40,7 @@ recipeChanged = new Subject<Recipe[]>();
         this.recipeChanged.next(this.recipes.slice())
       }
 
-      getRecipe(){
+      getRecipe(): Recipe[]{
         return  this.recipes.slice();
       }
 
