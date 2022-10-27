@@ -1,23 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
 import { Form, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceHolderDirective } from '../shared/placeholder/placeholder.directive';
 import { AuthResponse, AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy{
   isLogin = true;
   isLoading = false;
   error :string | undefined ;
+  @ViewChild(PlaceHolderDirective) hostalert : PlaceHolderDirective
+  private closeSub : Subscription;
 
 
-  constructor(private authService : AuthService, private router : Router){}
+  constructor(private authService : AuthService, 
+    private router : Router,
+    public componentFactoryResolver : ComponentFactoryResolver,){}
 
   onSwitchMode(){
     this.isLogin = !this.isLogin;
+  }
+
+  onHandleError(){
+    this.error=null;
+  }
+ngOnDestroy() {
+  if(this.closeSub){
+    this.closeSub.unsubscribe();
+  }
+  
+}
+  private showErrorMessafe(errorMessage : string){
+    const alertComponentResolver = 
+    this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+
+    const hostViewContainerRef = this.hostalert.viewContainerRef;
+    hostViewContainerRef.clear();
+   const CmpRef= hostViewContainerRef.createComponent(alertComponentResolver);
+   CmpRef.instance.message=errorMessage;
+   this.closeSub=CmpRef.instance.close.subscribe(()=>{
+    this.closeSub.unsubscribe();
+    hostViewContainerRef.clear();
+   })
   }
   onSubmit(form:NgForm){
     const email = form.value.email;
@@ -45,6 +74,7 @@ export class AuthComponent {
       error: (error) => {
         console.log(error);
         this.error=error;
+        this.showErrorMessafe(error);
         this.isLoading = false;
       }
   })
