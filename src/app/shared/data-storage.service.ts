@@ -22,7 +22,6 @@ export class DataStorageService{
     }
 
     fetchRecipe(){
-        debugger;
             return this.http.get<Recipe[]>('https://recipebook-2022-default-rtdb.firebaseio.com/recipes.json')
         .pipe(map(recipes=>{
             return recipes.map(recipe=>{
